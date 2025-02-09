@@ -9,22 +9,21 @@
         .btn-group { margin: 10px; }
         .btn { padding: 10px 20px; margin: 5px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; }
         .btn-number { background-color: #f39c12; color: white; }
-        .btn-size { background-color: #3498db; color: white; }
         .btn-submit { background-color: #2ecc71; color: white; }
-        input { padding: 10px; font-size: 16px; margin: 10px; width: 80%; max-width: 300px; }
-        #selected-info { font-size: 18px; font-weight: bold; margin: 20px 0; color: #d35400; }
+        input, textarea { padding: 10px; font-size: 16px; margin: 10px; width: 80%; max-width: 300px; }
+        #selected-info { font-size: 22px; font-weight: bold; margin: 20px 0; color: #d35400; }
     </style>
 </head>
 <body>
 
-    <h2>請選擇商品數量與尺寸</h2>
+    <h2>請選擇數量並填寫商品資訊</h2>
 
-    <!-- 編號輸入框 -->
-    <h3>編號</h3>
-    <input type="text" id="order-id" placeholder="請輸入訂單編號">
+    <!-- 商品編號輸入框 -->
+    <h3>商品編號</h3>
+    <input type="text" id="product-id" placeholder="請輸入商品編號">
 
     <!-- 商品數量按鈕 -->
-    <h3>商品</h3>
+    <h3>數量</h3>
     <div class="btn-group" id="quantity-group">
         <button class="btn btn-number" onclick="selectQuantity(1)">1</button>
         <button class="btn btn-number" onclick="selectQuantity(2)">2</button>
@@ -33,44 +32,43 @@
         <button class="btn btn-number" onclick="selectQuantity(5)">5</button>
         <button class="btn btn-number" onclick="selectQuantity(6)">6</button>
         <button class="btn btn-number" onclick="selectQuantity(7)">7</button>
+        <button class="btn btn-number" onclick="selectQuantity(8)">8</button>
+        <button class="btn btn-number" onclick="selectQuantity(9)">9</button>
+        <button class="btn btn-number" onclick="selectQuantity(10)">10</button>
     </div>
 
-    <!-- 尺寸按鈕 -->
+    <!-- 尺寸輸入框 -->
     <h3>尺寸</h3>
-    <div class="btn-group" id="size-group">
-        <button class="btn btn-size" onclick="selectSize('S')">S</button>
-        <button class="btn btn-size" onclick="selectSize('M')">M</button>
-        <button class="btn btn-size" onclick="selectSize('L')">L</button>
-        <button class="btn btn-size" onclick="selectSize('XL')">XL</button>
-    </div>
+    <input type="text" id="product-size" placeholder="請輸入尺寸">
+
+    <!-- 備註輸入框 -->
+    <h3>備註</h3>
+    <textarea id="product-remark" placeholder="請輸入備註（可選）" rows="3"></textarea>
 
     <!-- 顯示已選擇的資訊 -->
-    <div id="selected-info">已選擇：商品數量 1 ，尺寸 S</div>
+    <div id="selected-info">已選擇：數量 1</div>
 
     <!-- 提交按鈕 -->
     <button class="btn btn-submit" onclick="sendToLine()">提交訂單</button>
 
     <script>
         let selectedQuantity = 1;
-        let selectedSize = 'S';
 
         function selectQuantity(num) {
             selectedQuantity = num;
             updateSelectionDisplay();
         }
 
-        function selectSize(size) {
-            selectedSize = size;
-            updateSelectionDisplay();
-        }
-
         function updateSelectionDisplay() {
-            document.getElementById("selected-info").innerText = `已選擇：商品數量 ${selectedQuantity} ，尺寸 ${selectedSize}`;
+            document.getElementById("selected-info").innerText = `已選擇：數量 ${selectedQuantity}`;
         }
 
         function sendToLine() {
-            let orderId = document.getElementById("order-id").value.trim();
-            let message = `我要下單：\n訂單編號：${orderId}\n商品數量：${selectedQuantity}\n尺寸：${selectedSize}`;
+            let productId = document.getElementById("product-id").value.trim();
+            let productSize = document.getElementById("product-size").value.trim();
+            let productRemark = document.getElementById("product-remark").value.trim();
+
+            let message = `我要下單：\n商品編號：${productId}\n數量：${selectedQuantity}\n尺寸：${productSize}\n備註：${productRemark}`;
             
             let lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(message)}`;
             
